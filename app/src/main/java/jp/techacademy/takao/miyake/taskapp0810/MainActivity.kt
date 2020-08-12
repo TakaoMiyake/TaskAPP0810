@@ -10,7 +10,7 @@ import android.content.Intent
 import android.support.v7.app.AlertDialog
 import android.app.AlarmManager
 import android.app.PendingIntent
-import kotlinx.android.synthetic.main.content_input.*
+
 
 const val EXTRA_TASK = "jp.techacademy.taro.kirameki.taskapp.TASK"
 
