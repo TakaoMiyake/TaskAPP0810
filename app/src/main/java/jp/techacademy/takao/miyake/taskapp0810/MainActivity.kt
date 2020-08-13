@@ -10,11 +10,15 @@ import android.content.Intent
 import android.support.v7.app.AlertDialog
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.view.View
+import android.widget.Toast
+import io.realm.RealmResults
+import android.util.Log
 
 
-const val EXTRA_TASK = "jp.techacademy.taro.kirameki.taskapp.TASK"
+const val EXTRA_TASK = "jp.techacademy.takao.miyake.taskapp0810.TASK"
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mRealm: Realm
     private val mRealmListener = object : RealmChangeListener<Realm> {
         override fun onChange(element: Realm) {
@@ -23,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var mTaskAdapter: TaskAdapter
+    lateinit var taskRealmResults :RealmResults<Task>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +44,9 @@ class MainActivity : AppCompatActivity() {
 
         // ListViewの設定
         mTaskAdapter = TaskAdapter(this@MainActivity)
+
+        //カテゴリー決定ボタンの押下時処理
+        category_button.setOnClickListener(this@MainActivity)
 
         // ListViewをタップしたときの処理
         listView1.setOnItemClickListener { parent, _, position, _ ->
@@ -93,8 +101,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun reloadListView() {
         // Realmデータベースから、「全てのデータを取得して新しい日時順に並べた結果」を取得
-        //val taskRealmResults = mRealm.where(Task::class.java).findAll().sort("category", Sort.DESCENDING)
-        val taskRealmResults = mRealm.where(Task::class.java).findAll().sort("date",Sort.DESCENDING)
+        taskRealmResults = mRealm.where(Task::class.java).findAll().sort("date",Sort.DESCENDING)
 
         // 上記の結果を、TaskList としてセットする
         mTaskAdapter.taskList = mRealm.copyFromRealm(taskRealmResults)
@@ -110,5 +117,47 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
 
         mRealm.close()
+    }
+
+    override  fun onClick(v: View?) {
+
+        if (v!!.id == R.id.category_button) {
+
+
+            // ボタンが"決定"になっている時の処理
+
+            Log.d("ANDROID", "onClick内の決定ボタン判定前")
+
+            if (category_button.text.toString() == "決定") {
+                category_button.text = "キャンセル"
+
+                taskRealmResults =
+                    mRealm.where(Task::class.java).equalTo("category", category.text.toString())
+                        .findAll().sort("date", Sort.DESCENDING)
+
+                // 上記の結果を、TaskList としてセットする
+                mTaskAdapter.taskList = mRealm.copyFromRealm(taskRealmResults)
+
+                // TaskのListView用のアダプタに渡す
+                listView1.adapter = mTaskAdapter
+
+                // 表示を更新するために、アダプターにデータが変更されたことを知らせる
+                mTaskAdapter.notifyDataSetChanged()
+
+            }
+
+            // ボタンが"キャンセル"になっている時の処理
+            if (category_button.text.toString() == "キャンセル") {
+
+                this.onDestroy()
+                category_button.text = "決定"
+
+            }
+        } else {
+            Toast.makeText(this, "カテゴリー欄に何か入れてから決定ボタンをクリックしてください", Toast.LENGTH_SHORT).show()
+        }
+
+
+
     }
 }
