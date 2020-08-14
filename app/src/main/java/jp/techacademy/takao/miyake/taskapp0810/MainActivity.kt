@@ -33,6 +33,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //カテゴリー決定ボタンの押下時処理
+        this.category_button.setOnClickListener(this@MainActivity)
+
         fab.setOnClickListener {
             val intent = Intent(this@MainActivity, InputActivity::class.java)
             startActivity(intent)
@@ -45,8 +48,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // ListViewの設定
         mTaskAdapter = TaskAdapter(this@MainActivity)
 
-        //カテゴリー決定ボタンの押下時処理
-        category_button.setOnClickListener(this@MainActivity)
 
         // ListViewをタップしたときの処理
         listView1.setOnItemClickListener { parent, _, position, _ ->
@@ -126,13 +127,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             // ボタンが"決定"になっている時の処理
 
-            Log.d("ANDROID", "onClick内の決定ボタン判定前")
+            //Log.d("ANDROID", "onClick内の決定ボタン判定前")
 
             if (category_button.text.toString() == "決定") {
                 category_button.text = "キャンセル"
+                Log.d("ANDROID", "onClick内の決定ボタン判定の後")
 
-                taskRealmResults =
-                    mRealm.where(Task::class.java).equalTo("category", category.text.toString())
+               taskRealmResults =
+                    mRealm.where(Task::class.java).equalTo("category", category.toString())
                         .findAll().sort("date", Sort.DESCENDING)
 
                 // 上記の結果を、TaskList としてセットする
@@ -157,6 +159,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             Toast.makeText(this, "カテゴリー欄に何か入れてから決定ボタンをクリックしてください", Toast.LENGTH_SHORT).show()
         }
 
-        
+
     }
 }
