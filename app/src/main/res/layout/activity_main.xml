@@ -27,20 +27,34 @@ tools:context=".MainActivity">
         android:layout_below="@id/content_text"
         android:id="@+id/category"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:focusableInTouchMode="true"
+        android:descendantFocusability="beforeDescendants"
+        android:orientation="horizontal">
         <Button
-            android:layout_width="120dp"
+            android:layout_width="100dp"
             android:layout_height="40dp"
-            android:layout_marginLeft="200dp"
+            android:layout_marginLeft="120dp"
             android:text="決定"
             android:id="@+id/category_button"/>
 
+        <Button
+            android:layout_width="110dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/category_button"
+            android:text="キャンセル"
+            android:id="@+id/cancel_button"/>
+    </LinearLayout>
     </LinearLayout>
 
     <ListView
         android:id="@+id/listView1"
         android:layout_width="match_parent"
         android:layout_height="360dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="110dp"
         android:layout_below="@+id/category"
         app:layout_anchorGravity="center" />
 
