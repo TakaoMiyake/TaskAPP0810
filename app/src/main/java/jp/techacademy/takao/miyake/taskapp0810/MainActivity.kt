@@ -157,7 +157,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             Toast.makeText(this, "カテゴリー欄に何か入れてから決定ボタンをクリックしてください", Toast.LENGTH_SHORT).show()
         }
 
-
-
+        
     }
 }
