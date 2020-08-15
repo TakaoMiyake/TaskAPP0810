@@ -60,7 +60,7 @@ class InputActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         if (supportActionBar != null) {
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            Log.d("ANDROID","category_Status in inputActivity= " + category_Status.toString())
+            //Log.d("ANDROID","category_Status in inputActivity= " + category_Status.toString())
 
         }
 
