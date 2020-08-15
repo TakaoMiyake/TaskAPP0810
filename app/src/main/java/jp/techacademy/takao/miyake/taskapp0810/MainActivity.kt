@@ -10,18 +10,20 @@ import android.content.Intent
 import android.support.v7.app.AlertDialog
 import android.app.AlarmManager
 import android.app.PendingIntent
+
 import android.content.Context
 import android.view.View
 import android.widget.Toast
 import io.realm.RealmResults
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 
 var category_Status: Int = 0
 var category_content: String? = null
 const val EXTRA_TASK = "jp.techacademy.takao.miyake.taskapp0810.TASK"
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener{
     private lateinit var mRealm: Realm
     private val mRealmListener = object : RealmChangeListener<Realm> {
         override fun onChange(element: Realm) {
@@ -38,6 +40,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_main)
 
         //カテゴリー決定ボタンの押下時処理
+
         this.category_button.setOnClickListener(this@MainActivity)
 
         //キャンセルボタン押下時の処理
@@ -109,8 +112,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun reloadListView() {
 
-        Log.d("ANDROID","category_Status１ = " + category_Status.toString())
-        Log.d("ANDROID","category_content1 = " + category_content.toString())
+        //Log.d("ANDROID","category_Status１ = " + category_Status.toString())
+        //Log.d("ANDROID","category_content1 = " + category_content.toString())
 
         if (category_Status == 0) {
             // Realmデータベースから、「全てのデータを取得して新しい日時順に並べた結果」を取得
@@ -166,7 +169,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             // 表示を更新するために、アダプターにデータが変更されたことを知らせる
             mTaskAdapter.notifyDataSetChanged()
-            Log.d("ANDROID","category_Status２ = " + category_Status.toString())
+           // Log.d("ANDROID","category_Status２ = " + category_Status.toString())
             category_content = category.text.toString()
 
             Log.d("ANDROID","category_content2 = " + category_content.toString())
@@ -176,9 +179,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         else if (v!!.id==R.id.cancel_button) {
             category_Status = 0
                reloadListView()
-            Log.d("ANDROID","category_Status３ = " + category_Status.toString())
+            //Log.d("ANDROID","category_Status３ = " + category_Status.toString())
             category_content = ""
-            Log.d("ANDROID","category_content3= " + category_content.toString())
+            category.text=null
+          // Log.d("ANDROID","category_content3= " + category_content.toString())
         }
 
         /*else {
